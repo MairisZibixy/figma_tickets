@@ -1,0 +1,57 @@
+[{
+        "image_url": "images/5.png",
+        "details": "Contact Email not Linked",
+        "customer_name": "Tom Cruise",
+        "date": "May 26, 2019",
+        "priority": "high"
+    },
+    {
+        "image_url": "images/6.png",
+        "details": "Adding Images to Featured Posts",
+        "customer_name": "Matt Damon",
+        "date": "May 26, 2019",
+        "priority": "low"
+    },
+    {
+        "image_url": "images/7.png",
+        "details": "When will I be charged this month?",
+        "customer_name": "Robert Downey",
+        "date": "May 26, 2019",
+        "priority": "high"
+    },
+    {
+        "image_url": "images/8.png",
+        "details": "Payment not going through",
+        "customer_name": "Christian Bale",
+        "date": "May 25, 2019",
+        "priority": "normal"
+    },
+    {
+        "image_url": "images/9.png",
+        "details": "Unable to add replies",
+        "customer_name": "Henry Cavil",
+        "date": "May 25, 2019",
+        "priority": "high"
+    },
+    {
+        "image_url": "images/10.png",
+        "details": "Downtime since last week",
+        "customer_name": "Chris Evans",
+        "date": "May 25, 2019",
+        "priority": "normal"
+    },
+    {
+        "image_url": "images/11.png",
+        "details": "Referral Bonus",
+        "customer_name": "Sam Smith",
+        "date": "May 25, 2019",
+        "priority": "low"
+    },
+    {
+        "image_url": "images/12.png",
+        "details": "How do I change my password?",
+        "customer_name": "Steve Rogers",
+        "date": "May 24, 2019",
+        "priority": "normal"
+    }
+]
