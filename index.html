@@ -1,74 +1,72 @@
 <!DOCTYPE html>
 
-<head>
-    <title>Tickets</title>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" href="style.css" />
-    <!-- Pievienojam vue.js-->
-    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-</head>
+<link rel="stylesheet" href="style.css" />
+<meta charset="utf-8" />
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 
-<body>
-    <nav>
-        <div>Dashboard Kit</div>
-        <div>Overview</div>
-        <div>Tickets</div>
-        <div>Ideas</div>
-        <div>Contacts</div>
-        <div>Agents</div>
-        <div>Articles</div>
-        <hr />
-        <div>Settings</div>
-        <div>Subscription</div>
-    </nav>
-    <div id="app">
-        <button @click="requestApi()">request</button>
-        <input type="text" v-model="title" />
+<div id="app">
+    <button @click="requestApi('api.php')">request</button>
+    <input type="text" v-model="title" />
 
-        <div class="tickets">
-            <div class="tickets__header">
-                <h1 v-text="title"></h1>
-                <tickets_table :columns="createRowHeaders()">
-                    <tickets_row v-for="ticket in ticket_list" :row="ticket"></tickets_row>
-                </tickets_table>
-            </div>
+    <div class="tickets">
+        <div class="tickets__header">
+            <h1 v-text="title"></h1>
+            <tickets_table>
+                <tickets_header>
+                    <table_columns v-for="th in ticket_titles" :column="th" :callback="sortArray"></table_columns>
+                </tickets_header>
+                <tickets_row v-for="ticket in ticket_list" :row="ticket"></tickets_row>
+            </tickets_table>
         </div>
     </div>
-</body>
+</div>
 
+<script src="script.js"></script>
 <script>
     Vue.component("tickets_table", {
-        props: ["columns"],
+        template: `<table class="tickets__list">
+            <slot></slot>
+        </table>`,
+    });
+
+    Vue.component("tickets_header", {
         template: `
-  <table class="tickets__list">
-      <tr v-html="columns">
-      </tr>
-      <slot></slot>
-  </table>
-          `,
+            <tr>
+                <slot></slot>
+            </tr>
+        `,
+    });
+
+    Vue.component("table_columns", {
+        props: ["column", "callback"],
+        template: '<th v-text="column" @click="callback(column)"></th>',
     });
 
     Vue.component("tickets_row", {
         props: ["row"],
         template: `
-          <tr>
-              <td>
+        <tr>
+            <td>
                 <img v-if="row.image_url" v-bind:src="row.image_url">
                 <template v-if="!row.image_url">
                     <i>No image</i>
                     <span>🙎🏻‍♂️</span>
                 </template>
-                  <span>{{row.details}}</span>
-              </td>
-              <td>
-                  {{row.customer_name}}
-              </td>
-              <td>{{row.date}}</td>
-              <td>
+                
+                <span>{{row.details}}</span>
+            </td>
+            <td>
+                {{row.customer_name}}
+            </td>
+            <td class="date">{{row.date}} <span>{{row.time}}</span></td>
+            <td>
                 <span :class="'priority priority_' + row.priority">{{row.priority}}</span>
-              </td>
-          </tr>`,
+            </td>
+        </tr>`,
     });
+
+    let sort_direction = 1,
+        last_name = "";
 
     let app = new Vue({
         el: "#app",
@@ -78,32 +76,43 @@
             ticket_list: [],
         },
         methods: {
-            createRowHeaders: function() {
-                let headers = this.ticket_titles; // Izmanto ticket_titles no 'data'
-
-                let output = "";
-                for (let header of headers) {
-                    output += "<th>" + header + "</th>";
-                }
-
-                return output;
+            requestApi: function(url) {
+                request(url, changeList);
             },
-            requestApi: function() {
-                return request("api.php");
+            sortArray: function(name) {
+                let keys = {
+                    "Ticket details": "details",
+                    "Customer name": "customer_name",
+                    Date: "date",
+                    Priority: "priority",
+                };
+
+                name = keys[name];
+                if (last_name != name) {
+                    sort_direction = 1;
+                }
+                last_name = name;
+
+                this.ticket_list.sort(function(a, b) {
+                    var nameA = a[name].toUpperCase(); // ignore upper and lowercase
+                    var nameB = b[name].toUpperCase(); // ignore upper and lowercase
+                    if (nameA < nameB) {
+                        return -1 * sort_direction;
+                    }
+                    if (nameA > nameB) {
+                        return 1 * sort_direction;
+                    }
+                    return 0;
+                });
+
+                sort_direction = sort_direction * -1;
             },
         },
     });
 
-    function request(url) {
-        let xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                app.ticket_list = JSON.parse(this.responseText); // Json.parse pārveido datus js saprotamā valodā
-            }
-        };
-
-        xhttp.open("post", url);
-        xhttp.send();
+    function changeList(response) {
+        app.ticket_list = JSON.parse(response);
     }
-    request("api.php");
+
+    request("api.php", changeList);
 </script>

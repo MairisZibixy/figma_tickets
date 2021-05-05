@@ -52,3 +52,12 @@ h1 {
 .priority_low {
     background: #e7c320;
 }
+
+.date {
+    display: flex;
+    flex-direction: column;
+    span {
+        color: grey;
+        font-size: 12px;
+    }
+}
