@@ -23,12 +23,11 @@ class DB
     {
         $table_name = $this->mysql->escape_string($table_name);
         $result = $this->mysql->query("SELECT * FROM `$table_name`");
+        $this->entities = [];
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 $this->entities[$row["id"]] = $row;
             }
-        } else {
-            $this->entities = [];
         }
     }
 

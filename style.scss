@@ -1,16 +1,64 @@
 body {
     background: #e5e5e5;
+    margin: 0;
+}
+
+#app {
+    display: grid;
+    grid-template-columns: 255px 1fr;
+    grid-gap: 30px;
+}
+
+.sidemenu {
+    background: #363740;
+    min-height: 100vh;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding-top: 37px;
+    &>svg {
+        // & - norāda to pašu klasi, 'sidemenu', > * visiem iekšējiem elementiem
+        margin-left: 32px;
+        margin-bottom: 59px;
+    }
+    nav {
+        display: flex;
+        flex-direction: column;
+        hr {
+            width: 100%;
+            border: 1px solid #DFE0EB;
+        }
+        a {
+            color: #9FA2B4;
+            text-decoration: none;
+            height: 56px;
+            display: inline-block;
+            padding: 18px 24px 18px 32px;
+            box-sizing: border-box;
+            width: 100%;
+            &:hover {
+                background: #9fa2b411;
+                color: #dde2ff;
+            }
+            span {
+                margin-right: 24px;
+            }
+        }
+    }
 }
 
 .tickets {
     height: 942px;
-    width: 1122px;
+    max-width: 1122px;
+    width: 70%;
     background: #fff;
     border: 1px solid #dfe0eb;
     box-sizing: border-box;
     border-radius: 8px;
-    &__header {
-        padding: 32px;
+    overflow-x: auto;
+    padding: 32px;
+    table {
+        min-width: 800px;
     }
     &__list {
         width: 100%;

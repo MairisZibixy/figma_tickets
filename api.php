@@ -34,5 +34,13 @@ if (is_array($data)) {
     }
 }
 
+$db->fetchAll('side_menu');
+$menu = array_values($db->getAll());
 
-echo json_encode(array_values($data));
+$data = [
+    'tickets' => array_values($data),
+    'menu' => [$menu]
+];
+
+
+echo json_encode($data, JSON_PRETTY_PRINT);
