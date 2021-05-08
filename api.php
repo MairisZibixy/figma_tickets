@@ -5,9 +5,7 @@ header('Content-type: application/json');
 include "DB.php";
 $db = new DB('localhost', 'root', 'root', 'contact_management');
 
-$db->fetchAll('tickets');
-
-$data = $db->getAll();
+$data = $db->fetchAll('tickets')->getAll();
 
 if (is_array($data)) {
     foreach ($data as &$row) {
@@ -34,12 +32,26 @@ if (is_array($data)) {
     }
 }
 
-$db->fetchAll('side_menu');
-$menu = array_values($db->getAll());
+$menu = $db->fetchAll('side_menu')->getAll();
+$sorted_menu = []; // vērtības tiek ieliktas jaunā masīvā
+foreach ($menu as $item) {
+    $group = $item['link_group'];
+    $order = $item['link_order'];
+    unset($item['id'], $item['link_group'], $item['link_order']); // noņemam liekās grupas, lai neizvadās network sadaļā
+    $sorted_menu[$group][$order] = $item;
+}
+
+$headers = $db->fetchAll('headers')->getAll();
+$sorted_headers = [];
+foreach ($headers as $header) {
+    $order = $header['header_order'];
+    $sorted_headers[$order] = $header['header'];
+}
 
 $data = [
     'tickets' => array_values($data),
-    'menu' => [$menu]
+    'menu' => $sorted_menu,
+    'headers' => $sorted_headers,
 ];
 
 

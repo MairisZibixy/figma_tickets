@@ -29,6 +29,7 @@ class DB
                 $this->entities[$row["id"]] = $row;
             }
         }
+        return $this; // this ir tas pats fails uz ko izsaucam fetchAll, šajā gadījumā DB
     }
 
     /*

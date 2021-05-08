@@ -61,23 +61,23 @@
 <script>
     Vue.component("tickets_table", {
         template: `<table class="tickets__list">
-          <slot></slot>
-      </table>`,
+      <slot></slot>
+  </table>`,
     });
 
     Vue.component("tickets_header", {
         template: `
-          <tr>
-              <slot></slot>
-          </tr>
-      `,
+      <tr>
+          <slot></slot>
+      </tr>
+  `,
     });
 
     Vue.component("nav_link", {
         props: ["link"],
         template: `
-      <a href=""><span :class="'icon-' + link.Icon"></span>{{link.text}}</a>
-      `,
+  <a href=""><span :class="'icon-' + link.Icon"></span>{{link.text}}</a>
+  `,
     });
 
     Vue.component("table_columns", {
@@ -88,24 +88,24 @@
     Vue.component("tickets_row", {
         props: ["row"],
         template: `
-      <tr>
-          <td>
-              <img v-if="row.image_url" v-bind:src="row.image_url">
-              <template v-if="!row.image_url">
-                  <i>No image</i>
-                  <span>🙎🏻‍♂️</span>
-              </template>
+  <tr>
+      <td>
+          <img v-if="row.image_url" v-bind:src="row.image_url">
+          <template v-if="!row.image_url">
+              <i>No image</i>
+              <span>🙎🏻‍♂️</span>
+          </template>
 
-              <span>{{row.details}}</span>
-          </td>
-          <td>
-              {{row.customer_name}}
-          </td>
-          <td class="date">{{row.date}} <span>{{row.time}}</span></td>
-          <td>
-              <span :class="'priority priority_' + row.priority">{{row.priority}}</span>
-          </td>
-      </tr>`,
+          <span>{{row.details}}</span>
+      </td>
+      <td>
+          {{row.customer_name}}
+      </td>
+      <td class="date">{{row.date}} <span>{{row.time}}</span></td>
+      <td>
+          <span :class="'priority priority_' + row.priority">{{row.priority}}</span>
+      </td>
+  </tr>`,
     });
 
     let sort_direction = 1,
@@ -115,37 +115,11 @@
         el: "#app",
         data: {
             title: "All tickets",
-            ticket_titles: ["Ticket details", "Customer name", "Date", "Priority"],
+            ticket_titles: [],
             ticket_list: [],
-            side_menu: [
-                [{
-                    icon: "Vector",
-                    text: "Overview",
-                }, {
-                    icon: "Vector1",
-                    text: "Tickets",
-                }, {
-                    icon: "Vector2",
-                    text: "Ideas",
-                }, {
-                    icon: "Vector3",
-                    text: "Contacts",
-                }, {
-                    icon: "Vector4",
-                    text: "Agents",
-                }, {
-                    icon: "Vector5",
-                    text: "Articles",
-                }, ],
-                [{
-                    icon: "Vector6",
-                    text: "Settings",
-                }, {
-                    icon: "Vector7",
-                    text: "Subscription",
-                }, ],
-            ],
+            side_menu: [],
         },
+
         methods: {
             requestApi: function(url) {
                 request(url, changeList);
@@ -185,6 +159,7 @@
         response = JSON.parse(response);
         app.ticket_list = response.tickets;
         app.side_menu = response.menu;
+        app.ticket_titles = response.headers;
     }
 
     request("api.php", changeList);

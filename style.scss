@@ -7,6 +7,7 @@ body {
     display: grid;
     grid-template-columns: 255px 1fr;
     grid-gap: 30px;
+    width: 100vw;
 }
 
 .sidemenu {
@@ -50,7 +51,7 @@ body {
 .tickets {
     height: 942px;
     max-width: 1122px;
-    width: 70%;
+    width: 100%;
     background: #fff;
     border: 1px solid #dfe0eb;
     box-sizing: border-box;
